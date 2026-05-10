@@ -792,7 +792,7 @@ function renderLsList() {
     <div class="lsItem">
       <div>
         <span style="font-size:12px;font-weight:500;">${k}</span><br>
-        <span style="font-size:11px;color:#888;">낱말 ${(sheetsData[k].wordPool||[]).length.toLocaleString()}개 · 문장 ${(sheetsData[k].sentPool||[]).length.toLocaleString()}개</span>
+        <span style="font-size:11px;color:#888;">낱말 ${(sheetsData[k].wordPool||[]).length.toLocaleString()}개 · Frases ${(sheetsData[k].sentPool||[]).length.toLocaleString()}</span>
       </div>
       <button onclick="removeDS('${k}')">Eliminar</button>
     </div>`).join('');
@@ -1300,9 +1300,9 @@ function setOv(t,n,w,s,b) {
 function showRestOv(isLast) {
   showOvMsg();
   setOv(
-    isLast?'모든 훈련이 Completado':'잠시 눈을 감고 쉬어주세요',
+    isLast?'모든 훈련이 Completado':'Cierre los ojos y descanse',
     REST, null,
-    isLast?'10초 후 종료됩니다':'10 seg después '+PH[phase+1].label+' comenzará',
+    isLast?'Termina en 10 seg':'10 seg después '+PH[phase+1].label+' comenzará',
     null
   );
   OV.style.display='flex';
@@ -1320,8 +1320,8 @@ function showRestOv(isLast) {
 function showThink() {
   showOvMsg();
   const isRD=TM==='memory'||TM==='sentence';
-  const lbl=isRD?'Ronda '+(mRound+1)+'/'+TOTAL_RDS:'단계 '+(phase+1)+'/3';
-  setOv('잠시 눈을 감고 생각하세요', REST, null, lbl, null);
+  const lbl=isRD?'Ronda '+(mRound+1)+'/'+TOTAL_RDS:'Fase '+(phase+1)+'/3';
+  setOv('Cierre los ojos y piense', REST, null, lbl, null);
   OV.style.display='flex';
   let s=REST;
   riId=setInterval(() => {
@@ -1339,7 +1339,7 @@ function showWrite() {
       '¿En qué número apareció la siguiente palabra?', '',
       qData?'"'+qData.word+'"':'',
       isLast?'Todas las rondas completadas':'Cuando esté listo, inicie la siguiente ronda',
-      isLast?'Ver respuestas':'다음 라운드 →'
+      isLast?'Ver respuestas':'Siguiente ronda →'
     );
   } else {
     setOv('Escriba las palabras','','',
@@ -1434,7 +1434,7 @@ function showAnswers() {
   });
 
   if (isS) {
-    qlTitle.textContent='질문 단어 목록'; qlTitle.style.display='block';
+    qlTitle.textContent='Lista de palabras'; qlTitle.style.display='block';
     allRoundData.forEach((rd,i) => {
       if (!rd) return;
       const row=document.createElement('div');
@@ -1447,7 +1447,7 @@ function showAnswers() {
       chip.textContent='"'+(rd.quiz?.word||'')+'"';
       const ans=document.createElement('span');
       ans.style.cssText='font-size:11px;color:rgba(255,255,255,.5);';
-      ans.textContent='→ '+((rd.quiz?.sentIdx||0)+1)+'번 문장';
+      ans.textContent='→ '+((rd.quiz?.sentIdx||0)+1)+'ª frase';
       row.appendChild(l); row.appendChild(chip); row.appendChild(ans); qlEl.appendChild(row);
     });
   }
@@ -1467,7 +1467,7 @@ function handleEnd() {
     fmSpans.forEach(sp=>{sp.className='fm-w';});
     showAd(()=>{
       document.getElementById('fmCompleteOV').style.display='flex';
-      document.getElementById('fmCompInfo').textContent=fmChapter?`${fmPageIdx+1}/${fmChapter.pages.length} 페이지까지 읽음`:'';
+      document.getElementById('fmCompInfo').textContent=fmChapter?`${fmPageIdx+1}/${fmChapter.pages.length} páginas leídas`:'';
     });
     return;
   }
@@ -1492,7 +1492,7 @@ function updB() {
 function updMB() {
   document.getElementById('ba').textContent='Ronda '+(mRound+1)+'/'+TOTAL_RDS;
   document.getElementById('bb').textContent='단어 '+roundWords.length+'palabras';
-  document.getElementById('bc').textContent='회차 '+Math.min(mCycle+1,MEM_CYCLES)+'/'+MEM_CYCLES;
+  document.getElementById('bc').textContent='Vez '+Math.min(mCycle+1,MEM_CYCLES)+'/'+MEM_CYCLES;
 }
 function updSB() {
   document.getElementById('ba').textContent='Ronda '+(mRound+1)+'/'+TOTAL_RDS;
@@ -1697,7 +1697,7 @@ document.addEventListener('keydown', e => {
   /* Barra espaciadora → Siguiente ronda / Ver respuestas / Iniciar·Continuar */
   if (e.key===' ' || e.code==='Space') {
     e.preventDefault();
-    /* writing 상태: 다음 라운드 또는 정답 확인 버튼 역할 */
+    /* Estado writing: botón de siguiente ronda o ver respuestas */
     if (tState==='writing') { handleOvBtn(); return; }
     /* Estado idle/paused: Iniciar o Continuar */
     if (tState==='idle' || tState==='paused') { toggleStart(); return; }
